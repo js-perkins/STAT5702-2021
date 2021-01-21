@@ -54,7 +54,7 @@ library(lubridate)
 library(ggpubr)
 
 Canadian.data <- read_csv("https://health-infobase.canada.ca/src/data/covidLive/covid19.csv") %>% 
-                 mutate(date = as_date(date, format = "%d-%m-%y"))
+                 mutate(date = as_date(date, format = "%d-%m-%Y"))
 ```
 
 > Summary
@@ -232,14 +232,15 @@ school = school %>% mutate(school_board = str_replace_all(
 Now we can plot the school district data
 
 ```{r}
-
+#sum cases grouped by date and school board then plot with legend removed
 school%>% group_by(reported_date,school_board) %>%
   summarise(dailytotal = sum(total_confirmed_cases)) %>%
   ggplot(aes(x= reported_date, y =dailytotal , colour = school_board)) +
   geom_line() +
   scale_x_date(date_labels = "%d/%m", date_breaks = "1 weeks")+
-theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
-
+theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  theme(legend.position = "none") 
+#suddenly drops off in december from school going online suddenly
 ```
 
 ## COVID-19 Packages in R 
